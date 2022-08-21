@@ -1,0 +1,84 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "String",
+            "defaultValue": ""
+        },
+        "environment": {
+            "type": "string",
+            "defaultValue": "",
+            "allowedValues": [
+                "prod",
+                "dev",
+                "sandbox"
+            ]
+        },
+        "databricksSubnetName": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "databricksSandboxAddressPrefix": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "databricksSubnetAddress": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "databricksGatewaySubnetAddress": {
+            "type": "string",
+            "defaultValue": ""
+        }
+    },
+    "functions": [],
+    "variables": {
+        "tags": {
+            "Department": "it",
+            "Team": "networking",
+            "Environment": "sandbox",
+            "Application": "databricks"
+        },
+        "databricksSandboxVnetName": "[concat(parameters('databricksSubnetName'),'-',parameters('environment'),'-vnet')]",
+        "databricksSubnetName": "[concat(parameters('databricksSubnetName'),'-',parameters('environment'))]",
+        "clientNetworkSecurityGroupName": "[concat(parameters('databricksSubnetName'),'-',parameters('environment'),'-nsg')]"
+    },
+    "resources": [
+        {
+            "comments": "create brickstest-sandbox-vnet",
+            "name": "[variables('databricksSandboxVnetName')]",
+            "type": "Microsoft.Network/virtualNetworks",
+            "apiVersion": "2020-11-01",
+            "location": "[parameters('location')]",
+            "dependsOn": [],
+            "tags": "[variables('tags')]",
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "[parameters('databricksSandboxAddressPrefix')]"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "[variables('databricksSubnetName')]",
+                        "properties": {
+                            "addressPrefix": "[parameters('databricksSubnetAddress')]"/* ,
+                            "networkSecurityGroup": {
+                                "id": "[resourceId('Microsoft.Network/networkSecurityGroups',variables('clientNetworkSecurityGroupName'))]"
+                            } */
+                        }
+                    },
+                    {
+                        "name": "GatewaySubnet",
+                        "properties": { "addressPrefix": "[parameters('databricksGatewaySubnetAddress')]" }
+                    }
+                ]
+            }
+        }
+
+    ],
+    "outputs": {
+
+    }
+}
