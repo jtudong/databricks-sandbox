@@ -28,6 +28,6 @@ steps:
     resourceGroupName: 'databricks-sandbox-rg'
     location: 'West US 3'
     templateLocation: 'URL of the file'
-    csmFileLink: 'https://raw.githubusercontent.com/jtudong/arm-templates/development/databricks_lab_2/databricks_deploy.json'
-    csmParametersFileLink: 'https://raw.githubusercontent.com/jtudong/arm-templates/development/databricks_lab_2/databricks_deploy.parameters.json'
+    csmFileLink: 'https://raw.githubusercontent.com/jtudong/databricks-sandbox/development/databricks_deploy.json'
+    csmParametersFileLink: 'https://github.com/jtudong/databricks-sandbox/blob/development/databricks_deploy.parameters.json'
     deploymentMode: 'Incremental'
